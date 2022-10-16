@@ -12,7 +12,8 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   backend: string = environment.backend;
-  fetchProducts(page: number, pageSize: number): Observable<PageResponse> {
-    return this.httpClient.get<PageResponse>(this.backend + `/products?page=${page+1}&pageSize=${pageSize}`);
+  fetchProducts(sortActive: string, sortDirection:string, page: number, pageSize: number): Observable<PageResponse> {
+    return this.httpClient
+      .get<PageResponse>(this.backend + `/products?&page=${page+1}&pageSize=${pageSize}&sortBy=${sortActive}&orderBy=${sortDirection === "" ? 1:-1}`);
   }
 }
