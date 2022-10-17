@@ -30,6 +30,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     'productImage',
     'createdAt'
   ];
+
   dataSource: MatTableDataSource<Product> = new MatTableDataSource();
 
   @ViewChild(MatPaginator)
