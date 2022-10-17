@@ -30,7 +30,7 @@
 
     <ng-container matColumnDef="productImage">
       <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
-      <mat-cell *matCellDef="let element"> <img src="{{element.productImage}}"/> </mat-cell>
+      <mat-cell *matCellDef="let element"> <img src="{{element.productImage}}" style="height: 64px; width: 64px;"/> </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="description">

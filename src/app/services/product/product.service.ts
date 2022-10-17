@@ -14,6 +14,6 @@ export class ProductService {
   backend: string = environment.backend;
   fetchProducts(sortActive: string, sortDirection:string, page: number, pageSize: number): Observable<PageResponse> {
     return this.httpClient
-      .get<PageResponse>(this.backend + `/products?&page=${page+1}&pageSize=${pageSize}&sortBy=${sortActive}&orderBy=${sortDirection === "asc" || sortDirection === "1"? 1:-1}`);
+      .get<PageResponse>(this.backend + `/products?&page=${page+1}&pageSize=${pageSize}&sortBy=${sortActive}&orderBy=${sortDirection === "asc" || sortDirection === "1" ? 1 : -1}`);
   }
 }
