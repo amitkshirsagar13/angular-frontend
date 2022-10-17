@@ -16,17 +16,15 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   constructor(private productService: ProductService) { }
 
   isLoading = false;
+  pageSize = 25;
   totalRows = 0;
-  pageSize = 5;
   currentPage = 0;
   pageSizeOptions: number[] = [5, 10, 25];
 
   displayedColumns: string[] = [
     'id',
     'productName',
-    'productDescription',
     'productMaterial',
-    'description',
     'price',
     'department',
     'productImage',
@@ -69,7 +67,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
           setTimeout(() => {
             this.paginator.pageIndex = this.currentPage;
             this.paginator.length = response.totalRows;
-            this.sort.sortChange.emit({active: this.sort.active, direction: this.sort.direction});
           });
           this.isLoading = false;
           console.log('loadData');
@@ -81,9 +78,15 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       });
   }
 
-  pageChanged(event: PageEvent) {
+  onPageChanged(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
+    this.loadData();
+  }
+
+  onSortChanged(event: Sort) {
+    this.sort.active = event.active;
+    this.sort.direction = event.direction;
     this.loadData();
   }
 

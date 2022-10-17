@@ -1,6 +1,6 @@
 <div class="mat-elevation-z8">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-  <mat-table matSort [dataSource]="dataSource">
+  <mat-table matSort [dataSource]="dataSource" (matSortChange)="onSortChanged($event)">
 
     <!-- Position Column mat-sort-header -->
     <ng-container matColumnDef="id">
@@ -11,11 +11,6 @@
     <ng-container matColumnDef="productName">
       <mat-header-cell mat-sort-header *matHeaderCellDef> Name </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.productName}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="productDescription">
-      <mat-header-cell *matHeaderCellDef> Product Description </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.productDescription}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="productMaterial">
@@ -53,8 +48,13 @@
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page">
+  <mat-paginator #paginator
+  [length]="totalRows"
+  [pageIndex]="currentPage"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onPageChanged($event)"
+  aria-label="Select page">
   </mat-paginator>
 
 </div>
