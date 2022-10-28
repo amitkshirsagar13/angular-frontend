@@ -7,7 +7,7 @@ import { pipe } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { convertFileToBase64 } from '../../common/utils/fileToBase64';
-import { markAllAsDirty, toPayload } from '../../common/utils/forms/form-processor';
+import { markAllAsDirty, toFilePayload, toPayload } from '../../common/utils/forms/form-processor';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -62,35 +62,50 @@ export class ProductComponent implements OnInit {
     productMaterial: new FormControl('', [Validators.required]),
     price: new FormControl('', [Validators.required]),
     department: new FormControl('', [Validators.required]),
-    productImage: new FormControl('', [Validators.required, fileValidationRules(['jpg','png'], 50)])
+    productImage: new FormControl('', [Validators.required, fileValidationRules(['jpg','png'])])
   });
 
   async onSubmit() {
-    console.log(this.reactiveForm.value);
     this.success = false;
     if ( !this.reactiveForm.valid ) {
       markAllAsDirty(this.reactiveForm);
       return;
     }
     const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', 'Content-Type': 'application/json' };
-    const payload = await toPayload(this.reactiveForm.value, ['productImage']);
-    this.http.post(this.backend + '/products', payload, {
-      headers,
+    const jsonPayload = await toPayload(this.reactiveForm.value, ['productImage']);
+    const filePayload = await toFilePayload(this.reactiveForm.value, ['productImage']);
+
+    this.http.post(this.backend + '/products', filePayload, {
       reportProgress: true,
       observe: 'events'
     }).pipe(
       uploadProgress((progress) => {
         this.progress = progress;
+        console.log(progress);
       }),
       toResponseBody()
-    ).subscribe((res) => {
-      console.log(res);
-      setTimeout(() => {
-        this.progress = 0;
-      }, 5000);
-      this.success = true;
-      this.reactiveForm.reset();
+    ).subscribe((uploadRes: any) => {
+      jsonPayload['productImage'] = uploadRes.filePath;
+      this.http.post(this.backend + '/products', jsonPayload, {
+        headers,
+        reportProgress: true,
+        observe: 'events'
+      }).pipe(
+        uploadProgress((progress) => {
+          this.progress = progress;
+        }),
+        toResponseBody()
+      ).subscribe((res) => {
+        console.log(res);
+        setTimeout(() => {
+          this.progress = 0;
+        }, 5000);
+        this.success = true;
+        this.reactiveForm.reset();
+      });
     });
+
+
   }
 
   hasError( field: string, error: string ) {

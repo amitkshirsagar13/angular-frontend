@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 
-export function fileValidationRules( types: string[], maxAllowedSize:number ) {
+export function fileValidationRules( types: string[], maxAllowedSize:number = 1024 * 1024) {
   return function ( control: FormControl ) {
     const file = control.value;
     if ( file ) {
