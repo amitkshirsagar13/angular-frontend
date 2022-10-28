@@ -84,7 +84,9 @@ export class ProductComponent implements OnInit {
       }),
       toResponseBody()
     ).subscribe(res => {
-      // this.progress = 0;
+      setTimeout(() => {
+        this.progress = 0;
+      }, 5000);
       this.success = true;
       this.reactiveForm.reset();
     });
