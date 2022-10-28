@@ -83,7 +83,8 @@ export class ProductComponent implements OnInit {
         this.progress = progress;
       }),
       toResponseBody()
-    ).subscribe(res => {
+    ).subscribe((res) => {
+      console.log(res);
       setTimeout(() => {
         this.progress = 0;
       }, 5000);
