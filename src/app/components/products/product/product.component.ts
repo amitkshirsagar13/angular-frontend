@@ -4,9 +4,10 @@ import { fileValidationRules } from '../../common/utils/upload-file-validators';
 
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { pipe } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { convertFileToBase64 } from '../../common/utils/fileToBase64';
+import { markAllAsDirty, toPayload } from '../../common/utils/forms/form-processor';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -48,6 +49,7 @@ export class ProductComponent implements OnInit {
         if(this.reactiveForm.controls.productImage.valid) {
           const imageData: any = await convertFileToBase64(file);
           previewImageElement?.setAttribute('src', imageData);
+          document.getElementById('previewFileImage')?.setAttribute('src', imageData);
         } else {
           previewImageElement?.removeAttribute('src');
         }
@@ -71,7 +73,7 @@ export class ProductComponent implements OnInit {
       return;
     }
     const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar', 'Content-Type': 'application/json' };
-    const payload = await toPayload(this.reactiveForm.value);
+    const payload = await toPayload(this.reactiveForm.value, ['productImage']);
     this.http.post(this.backend + '/products', payload, {
       headers,
       reportProgress: true,
@@ -92,25 +94,4 @@ export class ProductComponent implements OnInit {
     const control:any = this.reactiveForm.get(field);
     return control.dirty && control.hasError(error);
   }
-}
-
-export function markAllAsDirty( form: FormGroup ) {
-  for ( const control of Object.keys(form.controls) ) {
-    form.controls[control].markAsDirty();
-  }
-}
-
-export async function toPayload( formValue: any ) {
-  const payload: any = {};
-  for ( const key of Object.keys(formValue) ) {
-    let value = formValue[key];
-    if(key === 'productImage') {
-      console.log(value);
-      value = await convertFileToBase64(value);
-      console.log(value);
-    }
-    payload[key] = value;
-  }
-  payload['createdAt'] = new Date().toISOString();
-  return payload;
 }

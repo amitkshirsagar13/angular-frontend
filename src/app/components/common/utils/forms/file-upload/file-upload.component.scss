@@ -13,6 +13,8 @@
   transition: 0.2s;
 }
 
+img { max-width: 100%; height: inherit; }
+
 .file-drop-area.is-active {
   background-color: #3F4069;
 }
@@ -25,6 +27,10 @@
   margin-right: 8px;
   font-size: 12px;
   text-transform: uppercase;
+}
+
+.file-upload {
+  display: flex;
 }
 
 .file-msg {

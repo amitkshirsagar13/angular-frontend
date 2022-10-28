@@ -1,6 +1,12 @@
-<div class="form-control form-input file-drop-area">
-  <span class="fake-btn">Choose file</span>
-  <span class="file-msg">{{file ? file.name : 'or drag and drop file here'}}</span>
-  <input class="file-input" type="file">
+<div class="file-upload file-drop-area ">
+  <div class="inline">
+    <span class="fake-btn">Choose file</span>
+    <span class="file-msg">{{file ? file.name : 'or drag and drop file here'}}</span>
+    <input class="file-input" type="file">
+  </div>
+  <div class="inline">
+    <img id='previewFileImage' />
+  </div>
 </div>
+
 <app-progress [progress]="progress"></app-progress>
