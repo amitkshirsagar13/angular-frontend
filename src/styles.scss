@@ -1,4 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap/scss/bootstrap";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.menu-active {
+  background-color: lightsteelblue;
+}
+
+app-root {
+  min-height: 100%;
+  display: block;
+  position: relative;
+}
+
+.form-card {
+  margin: 2rem;
+}
+
+.form-input {
+  margin: 0.5rem;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 60px;
+  width: 100%;
+}

@@ -1,0 +1,25 @@
+<mat-toolbar color = "primary">
+  <button mat-button [matMenuTriggerFor] = "products">Products</button>
+  <button mat-button [matMenuTriggerFor] = "orders">Orders</button>
+  <button mat-button [matMenuTriggerFor] = "users">Users</button>
+  <button mat-button [matMenuTriggerFor] = "catagories">Catagories</button>
+</mat-toolbar>
+<mat-menu #products="matMenu">
+  <button mat-menu-item routerLink="product" routerLinkActive="menu-active">Add Product</button>
+  <button mat-menu-item routerLink="products" routerLinkActive="menu-active">List Products</button>
+</mat-menu>
+
+<mat-menu #orders="matMenu">
+  <button mat-menu-item routerLink="order" routerLinkActive="menu-active">Add Order</button>
+  <button mat-menu-item routerLink="orders" routerLinkActive="menu-active">List Orders</button>
+</mat-menu>
+
+<mat-menu #users="matMenu">
+  <button mat-menu-item routerLink="user" routerLinkActive="menu-active">Add User</button>
+  <button mat-menu-item routerLink="users" routerLinkActive="menu-active">List Users</button>
+</mat-menu>
+
+<mat-menu #catagories="matMenu">
+  <button mat-menu-item routerLink="catagory" routerLinkActive="menu-active">Add Catagory</button>
+  <button mat-menu-item routerLink="catagories" routerLinkActive="menu-active">List Catagories</button>
+</mat-menu>
