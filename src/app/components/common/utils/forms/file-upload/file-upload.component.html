@@ -2,7 +2,7 @@
 
 
 <div class="form-group row form-input">
-  <div class="col-4"><label for="productImage">Image</label></div>
+  <div class="col-4" *ngIf="showLabel"><label for="productImage">{{label}}</label></div>
   <div class="col-8">
     <div class="file-upload file-drop-area ">
       <div class="inline">

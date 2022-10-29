@@ -14,7 +14,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements ControlValueAccessor {
-  @Input() progress: number = 0;
+  @Input()
+  progress: number = 0;
 
   @Input()
   id: string;
@@ -24,6 +25,9 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   @Input()
   label: string;
+
+  @Input()
+  showLabel: boolean;
 
   @Input()
   placeholder: string;

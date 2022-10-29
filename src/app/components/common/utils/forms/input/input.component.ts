@@ -25,6 +25,9 @@ export class InputComponent implements ControlValueAccessor {
   label: string;
 
   @Input()
+  showLabel: boolean;
+
+  @Input()
   placeholder: string;
 
   @Input()

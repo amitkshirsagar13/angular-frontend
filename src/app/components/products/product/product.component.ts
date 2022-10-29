@@ -40,6 +40,8 @@ export class ProductComponent implements OnInit {
   success: boolean = false;
   backend: string = environment.backend;
 
+  showLabel: boolean = true;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {

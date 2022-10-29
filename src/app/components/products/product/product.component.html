@@ -2,14 +2,20 @@
 <div class="card form-card">
   <div class="card-header">
     Product Form
+    <input
+      type="checkbox"
+      [checked]="showLabel"
+      (change)="showLabel = !showLabel"/>
   </div>
   <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
     <div class="card-body">
       <div class="row">
         <div class="col-9">
+
           <app-input type="text"
           id="productName"
           label="Product Name"
+          [showLabel]="showLabel"
           placeholder="Enter Product Name!!!"
           formControlName="productName"
           [errorList]="hasError('productName')"></app-input>
@@ -17,6 +23,7 @@
           <app-input type="text"
           id="productMaterial"
           label="Material Name"
+          [showLabel]="showLabel"
           placeholder="Enter Material Name!!!"
           formControlName="productMaterial"
           [errorList]="hasError('productMaterial')"></app-input>
@@ -24,6 +31,7 @@
           <app-input type="number"
           id="price"
           label="Price"
+          [showLabel]="showLabel"
           placeholder="Enter Price!!!"
           formControlName="price"
           [errorList]="hasError('price')"></app-input>
@@ -31,6 +39,7 @@
           <app-input type="number"
           id="department"
           label="Department"
+          [showLabel]="showLabel"
           placeholder="Enter Department!!!"
           formControlName="department"
           [errorList]="hasError('department')"></app-input>
@@ -38,6 +47,7 @@
           <app-file-upload
           id="productImage"
           label="Product Image"
+          [showLabel]="showLabel"
           formControlName="productImage"
           [progress]="progress"
           [errorList]="hasError('productImage')"></app-file-upload>
