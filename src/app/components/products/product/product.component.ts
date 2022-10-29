@@ -62,7 +62,7 @@ export class ProductComponent implements OnInit {
     productMaterial: new FormControl('', [Validators.required]),
     price: new FormControl('', [Validators.required]),
     department: new FormControl('', [Validators.required]),
-    productImage: new FormControl('', [Validators.required, fileValidationRules(['jpg','png'])])
+    productImage: new FormControl('', [Validators.required, fileValidationRules(['jpg','png'], 30)])
   });
 
   async onSubmit() {
