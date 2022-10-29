@@ -1,5 +1,6 @@
 import { FormGroup } from "@angular/forms";
-import { convertFileToBase64 } from "../fileToBase64";
+
+export const validatorKeys: string[] = ['required', 'requiredFileType', 'requiredFileSize'];
 
 export function markAllAsDirty( form: FormGroup ) {
   for ( const control of Object.keys(form.controls) ) {

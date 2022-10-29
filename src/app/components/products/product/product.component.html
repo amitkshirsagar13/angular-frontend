@@ -7,53 +7,41 @@
     <div class="card-body">
       <div class="row">
         <div class="col-9">
-          <div class="form-group row form-input">
-            <div class="col-4"><label for="productName">Product Name</label></div>
-            <div class="col-8">
-              <input class="form-control" type="text" id="productName" name="productName" formControlName="productName" placeholder="Enter product name">
-              <div class="invalid-feedback" style="display: block">
-                <ng-container *ngIf="hasError('productName', 'required')">This field is required</ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row form-input">
-            <div class="col-4"><label for="productMaterial">Material</label></div>
-            <div class="col-8">
-              <input class="form-control" type="text" id="productMaterial" name="productMaterial" formControlName="productMaterial" placeholder="Enter product material">
-              <div class="invalid-feedback" style="display: block">
-                <ng-container *ngIf="hasError('productMaterial', 'required')">This field is required</ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row form-input">
-            <div class="col-4"><label for="price">Price </label></div>
-            <div class="col-8">
-              <input class="form-control" type="number" id="price" name="price" formControlName="price" placeholder="Enter product price">
-              <div class="invalid-feedback" style="display: block">
-                <ng-container *ngIf="hasError('price', 'required')">This field is required</ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row form-input">
-            <div class="col-4"><label for="department">Department</label></div>
-            <div class="col-8">
-              <input class="form-control" type="text" id="department" name="department" formControlName="department" placeholder="Enter Department">
-              <div class="invalid-feedback" style="display: block">
-                <ng-container *ngIf="hasError('department', 'required')">This field is required</ng-container>
-              </div>
-            </div>
-          </div>
-          <div class="form-group row form-input">
-            <div class="col-4"><label for="productImage">Image</label></div>
-            <div class="col-8">
-              <app-file-upload formControlName="productImage" [progress]="progress"></app-file-upload>
-              <div class="invalid-feedback" style="display: block">
-                <ng-container *ngIf="hasError('productImage', 'required')">This field is required</ng-container>
-                <ng-container *ngIf="hasError('productImage', 'requiredFileType')">Only JPG/PNG 🤡</ng-container>
-                <ng-container *ngIf="hasError('productImage', 'requiredFileSize')">Allowed only size 50kb 🤡</ng-container>
-              </div>
-            </div>
-          </div>
+          <app-input type="text"
+          id="productName"
+          label="Product Name"
+          placeholder="Enter Product Name!!!"
+          formControlName="productName"
+          [errorList]="hasError('productName')"></app-input>
+
+          <app-input type="text"
+          id="productMaterial"
+          label="Material Name"
+          placeholder="Enter Material Name!!!"
+          formControlName="productMaterial"
+          [errorList]="hasError('productMaterial')"></app-input>
+
+          <app-input type="number"
+          id="price"
+          label="Price"
+          placeholder="Enter Price!!!"
+          formControlName="price"
+          [errorList]="hasError('price')"></app-input>
+
+          <app-input type="number"
+          id="department"
+          label="Department"
+          placeholder="Enter Department!!!"
+          formControlName="department"
+          [errorList]="hasError('department')"></app-input>
+
+          <app-file-upload
+          id="productImage"
+          label="Product Image"
+          formControlName="productImage"
+          [progress]="progress"
+          [errorList]="hasError('productImage')"></app-file-upload>
+
         </div>
         <div class="col-3">
           <img id='previewImage'/>

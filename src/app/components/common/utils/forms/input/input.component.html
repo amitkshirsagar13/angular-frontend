@@ -1,0 +1,12 @@
+<div class="form-group row form-input">
+  <div class="col-4"><label for="{{id}}">{{label}}</label></div>
+  <div class="col-8">
+    <input class="form-control" type="{{type}}" id="{{id}}" name="{{id}}" placeholder="{{placeholder}}"
+      [(ngModel)]="input"
+      (ngModelChange)="onChange($event)"
+      (blur)="onTouch()">
+      <div class="invalid-feedback" style="display: block">
+        <ng-container *ngIf="errorList.includes('required')">This field is required</ng-container>
+      </div>
+  </div>
+</div>

@@ -7,7 +7,7 @@ import { pipe } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { convertFileToBase64 } from '../../common/utils/fileToBase64';
-import { markAllAsDirty, toFilePayload, toPayload } from '../../common/utils/forms/form-processor';
+import { markAllAsDirty, toFilePayload, toPayload, validatorKeys } from '../../common/utils/forms/form-processor';
 
 
 export function uploadProgress<T>( cb: ( progress: number ) => void ) {
@@ -108,8 +108,11 @@ export class ProductComponent implements OnInit {
 
   }
 
-  hasError( field: string, error: string ) {
+  hasError(field: string) {
     const control:any = this.reactiveForm.get(field);
-    return control.dirty && control.hasError(error);
+    const errorList = validatorKeys.filter(error => {
+      return control.dirty && control.hasError(error);
+    });
+    return errorList;
   }
 }
