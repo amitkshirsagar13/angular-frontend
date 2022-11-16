@@ -4,14 +4,14 @@
 <div class="form-group row form-input">
   <div class="col-4" *ngIf="showLabel"><label for="productImage">{{label}}</label></div>
   <div class="col-8">
-    <div class="file-upload file-drop-area ">
-      <div class="inline">
+    <div class="file-upload file-drop-area inline ">
+      <div class="padded-drop">
         <span class="fake-btn">Choose file</span>
         <span class="file-msg">{{file ? file.name : 'or drag and drop file here'}}</span>
         <input class="file-input" type="file">
       </div>
-      <div class="inline">
-        <img id='previewFileImage' />
+      <div class="pull-right">
+        <img id='preview' class="preview-img"/>
       </div>
     </div>
     <app-progress [progress]="progress"></app-progress>

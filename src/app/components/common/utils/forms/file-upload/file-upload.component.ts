@@ -38,6 +38,8 @@ export class FileUploadComponent implements ControlValueAccessor {
 
   onChange: Function;
 
+  text: string = 'Preview Image'
+
   @HostListener('change', ['$event.target.files']) emitFiles( event: FileList ) {
     const file = event && event.item(0);
     this.onChange(file);

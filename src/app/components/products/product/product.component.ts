@@ -51,7 +51,7 @@ export class ProductComponent implements OnInit {
         if(this.reactiveForm.controls.productImage.valid) {
           const imageData: any = await convertFileToBase64(file);
           previewImageElement?.setAttribute('src', imageData);
-          document.getElementById('previewFileImage')?.setAttribute('src', imageData);
+          // document.getElementById('previewFileImage')?.setAttribute('src', imageData);
         } else {
           previewImageElement?.removeAttribute('src');
         }
