@@ -1,3 +1,23 @@
+<div class="container">
+  <div class="card">
+    <form [formGroup]="searchForm">
+      <div class="card-header">Search Product</div>
+      <div class="card-body">
+        <div>
+          <input class="input" formControlName="productMaterial" minLength="5" placeholder="Product Material" required id="productMaterial"/>
+          <div class="errors">
+            <app-error [fieldControl]="searchForm.controls['productMaterial']"></app-error>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="button" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 <div class="mat-elevation-z8">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <mat-table matSort [dataSource]="dataSource" (matSortChange)="onSortChanged($event)">
@@ -47,14 +67,14 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
-  <mat-paginator #paginator
-  [length]="totalRows"
-  [pageIndex]="currentPage"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="onPageChanged($event)"
-  aria-label="Select page">
-  </mat-paginator>
-
+  <div>
+    <mat-paginator #paginator
+      [length]="totalRows"
+      [pageIndex]="currentPage"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChanged($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
 </div>

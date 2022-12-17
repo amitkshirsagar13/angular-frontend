@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,8 +13,19 @@ import { ProductService } from 'src/app/services/product/product.service';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
+  constructor(private formBuilder: FormBuilder, private productService: ProductService) {
+    console.log('constructor');
+    this.createForm();
+  }
 
-  constructor(private productService: ProductService) { }
+  searchForm: FormGroup;
+  createForm() {
+    console.log('createForm');
+    this.searchForm = this.formBuilder.group({
+      productName: [''],
+      productMaterial: [''],
+    });
+  }
 
   isLoading = false;
   pageSize = 25;
@@ -33,22 +45,19 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
   dataSource: MatTableDataSource<Product> = new MatTableDataSource();
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true })
-  sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort = new MatSort();
 
   ngOnInit(): void {
-    this.loadData();
     console.log('ngOnInit');
+    this.loadData();
   }
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit');
     this.dataSource.paginator = this.paginator;
-    const sortState: Sort = {active: 'id', direction: 'asc'};
-    this.sort.active = sortState.active;
-    this.sort.direction = sortState.direction;
+    this.paginator.pageIndex = this.currentPage;
+    this.paginator.length = this.dataSource.data.length;
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'createdAt': return new Date(item.createdAt).getTime();
@@ -59,18 +68,18 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   loadData() {
+    console.log('loadData');
     this.isLoading = true;
     this.productService.
-      fetchProducts(this.sort.active, this.sort.direction, this.currentPage, this.pageSize)
+      fetchProducts(this.sort?.active ?? 'id', this.sort?.direction ?? 'asc', this.currentPage, this.pageSize)
       .subscribe({
         next: (response: PageResponse) => {
           this.dataSource.data = response.data;
-          setTimeout(() => {
-            this.paginator.pageIndex = this.currentPage;
+          setTimeout(()=>{
+            this.paginator.pageIndex = response.page - 1;
             this.paginator.length = response.totalRows;
           });
           this.isLoading = false;
-          console.log('loadData');
         },
         error: (error:any) => {
           console.log(error);
@@ -80,12 +89,14 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   onPageChanged(event: PageEvent) {
+    console.log('onPageChanged')
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
     this.loadData();
   }
 
   onSortChanged(event: Sort) {
+    console.log('onSortChanged:', event.active, ":", event.direction)
     this.sort.active = event.active;
     this.sort.direction = event.direction;
     this.loadData();

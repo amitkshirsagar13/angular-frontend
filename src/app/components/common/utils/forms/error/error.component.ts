@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlDirective } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,10 @@ import { AbstractControl, AbstractControlDirective } from '@angular/forms';
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss']
 })
-export class ErrorComponent {
+export class ErrorComponent implements OnInit {
+  ngOnInit() {
+    this.listErrors();
+  }
   @Input() fieldControl: AbstractControl | AbstractControlDirective;
 
   errorMessage: any = {
@@ -21,19 +24,13 @@ export class ErrorComponent {
   errorMsgList: any = [];
 
   listErrors() {
-    if (!this.fieldControl) return [];
-
-    if (this.fieldControl.errors) {
-      this.errorMsgList = [];
+    this.errorMsgList = [];
+    if (this.fieldControl.dirty && this.fieldControl.errors) {
       Object.keys(this.fieldControl.errors).forEach( (error:string) => {
-        console.log(this.fieldControl.errors);
         let errorMessage = this.fieldControl.touched || this.fieldControl.dirty ?
           this.errorMessage[error](error):`undefined error type ${error}`;
           this.errorMsgList.push(errorMessage);
       });
-      return this.errorMsgList;
-    } else {
-      return [];
     }
   }
 }
