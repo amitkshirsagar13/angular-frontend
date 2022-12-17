@@ -3,10 +3,20 @@
     <form [formGroup]="searchForm">
       <div class="card-header">Search Product</div>
       <div class="card-body">
-        <div>
-          <input class="input" formControlName="productMaterial" minLength="5" placeholder="Product Material" required id="productMaterial"/>
+        <div class="input">
+          <input class="form-control" formControlName="productName" placeholder="Product Name" required id="productName"/>
           <div class="errors">
-            <app-error [fieldControl]="searchForm.controls['productMaterial']"></app-error>
+            <app-error 
+              [showErrors]="searchForm.controls['productName'].touched || searchForm.controls['productName'].dirty"
+              [errors]="searchForm.controls['productName'].errors" ></app-error>
+          </div>
+        </div>
+        <div class="input">
+          <input class="form-control textbox" formControlName="productMaterial" placeholder="Product Material" required id="productMaterial"/>
+          <div class="errors">
+            <app-error 
+              [showErrors]="searchForm.controls['productMaterial'].touched || searchForm.controls['productMaterial'].dirty"
+              [errors]="searchForm.controls['productMaterial'].errors" ></app-error>
           </div>
         </div>
       </div>

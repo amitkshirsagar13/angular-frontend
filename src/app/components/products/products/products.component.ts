@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,12 +19,28 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   }
 
   searchForm: FormGroup;
+
   createForm() {
     console.log('createForm');
-    this.searchForm = this.formBuilder.group({
-      productName: [''],
-      productMaterial: [''],
+    this.searchForm = this.formBuilder
+      .group(
+        {
+          productName: new FormControl('', Validators.minLength(5)),
+          productMaterial: new FormControl('', Validators.maxLength(5))
+        }, 
+        { updateOn: 'blur' }
+      );
+  }
+  
+  validatorKeys: string[] = ['required', 'minLength', 'maxLength'];
+
+  hasError(field: string) {
+    console.log(field);
+    const control: any = this.searchForm.get(field);
+    const errorList = this.validatorKeys.filter(error => {
+      return control && control.dirty && control.hasError(error);
     });
+    return errorList;
   }
 
   isLoading = false;

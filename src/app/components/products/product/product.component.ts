@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { fileValidationRules } from '../../common/utils/upload-file-validators';
 
 import { HttpClient, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -41,14 +41,27 @@ export class ProductComponent implements OnInit {
   backend: string = environment.backend;
 
   showLabel: boolean = true;
+  reactiveForm: FormGroup;
 
-  constructor(private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+    this.createForm();
+  }
+
+  createForm() {
+    this.reactiveForm = this.formBuilder.group({
+      productName: ['', [Validators.required]],
+      productMaterial: ['', [Validators.required]],
+      price: ['', [Validators.required]],
+      department: ['', [Validators.required]],
+      productImage: ['', [Validators.required, fileValidationRules(['jpg','png'], 30)]]
+    });
+  }
 
   ngOnInit(): void {
-    this.reactiveForm.controls.productImage.valueChanges.subscribe((file: any) => {
+    this.reactiveForm.controls['productImage'].valueChanges.subscribe((file: any) => {
       setTimeout(async () => {
         const previewImageElement = document.getElementById('previewImage');
-        if(this.reactiveForm.controls.productImage.valid) {
+        if(this.reactiveForm.controls['productImage'].valid) {
           const imageData: any = await convertFileToBase64(file);
           previewImageElement?.setAttribute('src', imageData);
           // document.getElementById('previewFileImage')?.setAttribute('src', imageData);
@@ -58,14 +71,6 @@ export class ProductComponent implements OnInit {
       })
     });
   }
-
-  reactiveForm = new FormGroup({
-    productName: new FormControl('', [Validators.required]),
-    productMaterial: new FormControl('', [Validators.required]),
-    price: new FormControl('', [Validators.required]),
-    department: new FormControl('', [Validators.required]),
-    productImage: new FormControl('', [Validators.required, fileValidationRules(['jpg','png'], 30)])
-  });
 
   async onSubmit() {
     this.success = false;
@@ -87,27 +92,31 @@ export class ProductComponent implements OnInit {
       }),
       toResponseBody()
     ).subscribe((uploadRes: any) => {
-      jsonPayload['productImage'] = uploadRes.filePath;
-      this.http.post(this.backend + '/products', jsonPayload, {
-        headers,
-        reportProgress: true,
-        observe: 'events'
-      }).pipe(
-        uploadProgress((progress) => {
-          this.progress = progress;
-        }),
-        toResponseBody()
-      ).subscribe((res) => {
-        console.log(res);
-        setTimeout(() => {
-          this.progress = 0;
-        }, 5000);
-        this.success = true;
-        this.reactiveForm.reset();
-      });
+      if(uploadRes) {
+        jsonPayload['productImage'] = uploadRes.filePath;
+        this.processFormSubmission(headers, jsonPayload);
+      }
+      
     });
-
-
+  }
+  processFormSubmission(headers: any, jsonPayload: any) {
+    this.http.post(this.backend + '/products', jsonPayload, {
+      headers,
+      reportProgress: true,
+      observe: 'events'
+    }).pipe(
+      uploadProgress((progress) => {
+        this.progress = progress;
+      }),
+      toResponseBody()
+    ).subscribe((res) => {
+      console.log(res);
+      setTimeout(() => {
+        this.progress = 0;
+      }, 5000);
+      this.success = true;
+      this.reactiveForm.reset();
+    });
   }
 
   hasError(field: string) {

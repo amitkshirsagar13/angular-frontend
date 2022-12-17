@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, AbstractControlDirective } from '@angular/forms';
+import { AbstractControl, AbstractControlDirective, FormControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-error',
@@ -8,12 +8,12 @@ import { AbstractControl, AbstractControlDirective } from '@angular/forms';
 })
 export class ErrorComponent implements OnInit {
   ngOnInit() {
-    this.listErrors();
   }
-  @Input() fieldControl: AbstractControl | AbstractControlDirective;
+  @Input() errors: any | null;
+  @Input() showErrors: boolean;
 
   errorMessage: any = {
-    'required'  : (params: any| null)  => `${params} field is required`,
+    'required'  : (params: any| null)  => `Field is required`,
     'maxlength' : (params: any| null)  => `Maximum ${params.requiredLength} characters are allowed`,
     'minlength' : (params: any| null)  => `Minimum ${params.requiredLength} characters are required`,
     'pattern'   : (params: any| null)  => `Invalid format`,
@@ -22,15 +22,19 @@ export class ErrorComponent implements OnInit {
   };
   
   errorMsgList: any = [];
+  ngOnChanges() {
+    this.listErrors();
+  } 
 
   listErrors() {
+    console.log('listErrors')
     this.errorMsgList = [];
-    if (this.fieldControl.dirty && this.fieldControl.errors) {
-      Object.keys(this.fieldControl.errors).forEach( (error:string) => {
-        let errorMessage = this.fieldControl.touched || this.fieldControl.dirty ?
-          this.errorMessage[error](error):`undefined error type ${error}`;
-          this.errorMsgList.push(errorMessage);
+    if (this.errors && this.showErrors) {
+      Object.keys(this.errors).forEach( (error) => {
+        let errorMessage = this.errorMessage[error](this.errors[error]);
+        this.errorMsgList.push(errorMessage);
       });
     }
+    return this.errorMsgList;
   }
 }

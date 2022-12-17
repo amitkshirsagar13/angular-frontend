@@ -15,41 +15,41 @@
           <app-input type="text"
           id="productName"
           label="Product Name"
-          [showLabel]="showLabel"
-          placeholder="Enter Product Name!!!"
           formControlName="productName"
+          placeholder="Enter Product Name!!!"
+          [showLabel]="showLabel"
           [errorList]="hasError('productName')"></app-input>
 
           <app-input type="text"
           id="productMaterial"
           label="Material Name"
-          [showLabel]="showLabel"
-          placeholder="Enter Material Name!!!"
           formControlName="productMaterial"
+          placeholder="Enter Material Name!!!"
+          [showLabel]="showLabel"
           [errorList]="hasError('productMaterial')"></app-input>
 
           <app-input type="number"
           id="price"
           label="Price"
-          [showLabel]="showLabel"
-          placeholder="Enter Price!!!"
           formControlName="price"
+          placeholder="Enter Price!!!"
+          [showLabel]="showLabel"
           [errorList]="hasError('price')"></app-input>
 
-          <app-input type="number"
+          <app-input type="text"
           id="department"
           label="Department"
-          [showLabel]="showLabel"
-          placeholder="Enter Department!!!"
           formControlName="department"
+          placeholder="Enter Department!!!"
+          [showLabel]="showLabel"
           [errorList]="hasError('department')"></app-input>
 
           <app-file-upload
           id="productImage"
           label="Product Image"
-          [showLabel]="showLabel"
           formControlName="productImage"
           [progress]="progress"
+          [showLabel]="showLabel"
           [errorList]="hasError('productImage')"></app-file-upload>
         </div>
         <div class="col-3">
