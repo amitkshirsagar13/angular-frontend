@@ -20,6 +20,7 @@ import { MenuSidenavComponent } from './components/menus/menu-sidenav/menu-siden
 import { FileUploadComponent } from './components/common/utils/forms/file-upload/file-upload.component';
 import { ProgressComponent } from './components/common/utils/progress/progress.component';
 import { InputComponent } from './components/common/utils/forms/input/input.component';
+import { ErrorComponent } from './components/common/utils/forms/error/error.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { InputComponent } from './components/common/utils/forms/input/input.comp
     MenuSidenavComponent,
     FileUploadComponent,
     ProgressComponent,
-    InputComponent
+    InputComponent,
+    ErrorComponent
   ],
   imports: [
     AppRoutingModule,
