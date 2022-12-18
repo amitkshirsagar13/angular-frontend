@@ -15,10 +15,6 @@
       </div>
     </div>
     <app-progress [progress]="progress"></app-progress>
-    <div class="invalid-feedback" style="display: block">
-      <ng-container *ngIf="errorList.includes('required')">This field is required</ng-container>
-      <ng-container *ngIf="errorList.includes('requiredFileType')">Only JPG/PNG 🤡</ng-container>
-      <ng-container *ngIf="errorList.includes('requiredFileSize')">Allowed only size 50kb 🤡</ng-container>
-    </div>
+    <app-error [error]="error"></app-error>
   </div>
 </div>

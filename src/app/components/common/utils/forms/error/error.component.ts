@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, AbstractControlDirective, FormControl, ValidationErrors } from '@angular/forms';
+import { InputError } from './error.model';
 
 @Component({
   selector: 'app-error',
@@ -7,31 +7,35 @@ import { AbstractControl, AbstractControlDirective, FormControl, ValidationError
   styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent implements OnInit {
-  ngOnInit() {
-  }
-  @Input() errors: any | null;
-  @Input() showErrors: boolean;
+  ngOnInit() {}
+  @Input() error: InputError | null;
 
   errorMessage: any = {
     'required'  : (params: any| null)  => `Field is required`,
     'maxlength' : (params: any| null)  => `Maximum ${params.requiredLength} characters are allowed`,
     'minlength' : (params: any| null)  => `Minimum ${params.requiredLength} characters are required`,
-    'pattern'   : (params: any| null)  => `Invalid format`,
-    'min'       : (params: any| null)  => `Minimum amount should be ₹ ${params.min}`,
-    'whitespace': (params: any| null)  => `White spaces are not allowed`
+    'pattern'   : (params: any| null)  => `Invalid format|pattern`,
+    'min'       : (params: any| null)  => `Minimum value allowed ${params.min}`,
+    'max'       : (params: any| null)  => `Maximum value allowed ${params.max}`,
+    'whitespace': (params: any| null)  => `White spaces are not allowed`,
+    'requiredFileType': (params: any| null)  => `Only ${params.types} 🤡`,
+    'requiredFileSize': (params: any| null)  => `Allowed only size ${params.maxAllowedSize}kb 🤡`,
+    'rangeInvalid': (params: any| null)  => `Min value should be smaller than max value`,
   };
   
   errorMsgList: any = [];
-  ngOnChanges() {
-    this.listErrors();
-  } 
 
-  listErrors() {
-    console.log('listErrors')
+  ngOnChanges() {
+    this.showErrors();
+  }
+
+  showErrors() {
     this.errorMsgList = [];
-    if (this.errors && this.showErrors) {
-      Object.keys(this.errors).forEach( (error) => {
-        let errorMessage = this.errorMessage[error](this.errors[error]);
+    if (this.error && this.error.canShow) {
+      Object.keys(this.error.items).forEach( (error) => {
+        const msgFn = this.errorMessage[error];
+
+        let errorMessage = msgFn ? msgFn(this.error?.items[error]): `Undefined error with key: ${error}`;
         this.errorMsgList.push(errorMessage);
       });
     }

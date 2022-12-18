@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputError } from '../error/error.model';
 
 @Component({
   selector: 'app-file-upload',
@@ -32,7 +33,8 @@ export class FileUploadComponent implements ControlValueAccessor {
   @Input()
   placeholder: string;
 
-  @Input() errorList: string[] = [];
+  @Input()
+  error: InputError;
 
   file: File | null = null;
 

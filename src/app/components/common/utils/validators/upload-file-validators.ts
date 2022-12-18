@@ -7,13 +7,13 @@ export function fileValidationRules( types: string[], maxAllowedSize:number = 10
       const extension = file.name.split('.')[1].toLowerCase();
       if ( !types.map((type) => type.toLowerCase()).includes(extension.toLowerCase()) ) {
         return {
-          requiredFileType: true
+          requiredFileType: { types, extension }
         };
       }
       const size = file.size / 1024;
       if ( size > maxAllowedSize ) {
         return {
-          requiredFileSize: true
+          requiredFileSize: { maxAllowedSize, size }
         };
       }
     }

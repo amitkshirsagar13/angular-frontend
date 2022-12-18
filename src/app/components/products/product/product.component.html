@@ -18,7 +18,7 @@
           formControlName="productName"
           placeholder="Enter Product Name!!!"
           [showLabel]="showLabel"
-          [errorList]="hasError('productName')"></app-input>
+          [error]="error('productName')"></app-input>
 
           <app-input type="text"
           id="productMaterial"
@@ -26,7 +26,7 @@
           formControlName="productMaterial"
           placeholder="Enter Material Name!!!"
           [showLabel]="showLabel"
-          [errorList]="hasError('productMaterial')"></app-input>
+          [error]="error('productMaterial')"></app-input>
 
           <app-input type="number"
           id="price"
@@ -34,7 +34,7 @@
           formControlName="price"
           placeholder="Enter Price!!!"
           [showLabel]="showLabel"
-          [errorList]="hasError('price')"></app-input>
+          [error]="error('price')"></app-input>
 
           <app-input type="text"
           id="department"
@@ -42,7 +42,7 @@
           formControlName="department"
           placeholder="Enter Department!!!"
           [showLabel]="showLabel"
-          [errorList]="hasError('department')"></app-input>
+          [error]="error('department')"></app-input>
 
           <app-file-upload
           id="productImage"
@@ -50,7 +50,7 @@
           formControlName="productImage"
           [progress]="progress"
           [showLabel]="showLabel"
-          [errorList]="hasError('productImage')"></app-file-upload>
+          [error]="error('productImage')"></app-file-upload>
         </div>
         <div class="col-3">
           <img class="preview-img" id='previewImage'/>

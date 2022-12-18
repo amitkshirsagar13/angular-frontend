@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PageResponse } from 'src/app/models/pageResponse.model';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product/product.service';
+import { InputError } from '../../common/utils/forms/error/error.model';
+import { rangeValidator } from '../../common/utils/validators/range-validators';
 
 @Component({
   selector: 'app-products',
@@ -13,34 +15,61 @@ import { ProductService } from 'src/app/services/product/product.service';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
+
   constructor(private formBuilder: FormBuilder, private productService: ProductService) {
     console.log('constructor');
-    this.createForm();
+    this.createOrRecreateForm();
   }
 
+  // Always create method createForm and call it from the constructor
   searchForm: FormGroup;
-
-  createForm() {
-    console.log('createForm');
+  get sfC(): any {
+    return this.searchForm.controls
+  }
+  createOrRecreateForm() {
+    console.log('createOrRecreateForm');
     this.searchForm = this.formBuilder
       .group(
         {
-          productName: new FormControl('', Validators.minLength(5)),
-          productMaterial: new FormControl('', Validators.maxLength(5))
+          productName: ['', Validators.minLength(5)],
+          productMaterial: ['', { validators: Validators.maxLength(5), updateOn: 'change'}], 
+          minPrice: [0, { validators: Validators.min(10) }], 
+          maxPrice: [1000, { validators: Validators.max(1000000) }], 
         }, 
-        { updateOn: 'blur' }
+        { validators: rangeValidator('minPrice', 'maxPrice'), updateOn: 'blur' }
       );
   }
   
-  validatorKeys: string[] = ['required', 'minLength', 'maxLength'];
+  error(field: string|undefined): InputError {
+    if(!field) {
+      return {
+        canShow: this.searchForm.dirty,
+        items: this.searchForm.errors ? this.searchForm.errors : {},
+        field: 'form'
+      }
+    }
+    const control:any = this.searchForm.get(field);
+    return {
+      canShow: control.touched || control.dirty,
+      items: control.errors ? control.errors : {},
+      field
+    };
+  }
 
-  hasError(field: string) {
-    console.log(field);
-    const control: any = this.searchForm.get(field);
-    const errorList = this.validatorKeys.filter(error => {
-      return control && control.dirty && control.hasError(error);
-    });
-    return errorList;
+  searchFn() {
+    // Create searchTerms from the searchForm control fields
+    const searchTerms = {
+      productName: this.sfC.productName.value,
+      productMaterial: this.sfC.productMaterial.value,
+      price: {
+        min: this.sfC.minPrice.value,
+        max: this.sfC.maxPrice.value,
+      }
+    };
+
+    console.log(searchTerms);
+    
+    this.dataSource.filter = JSON.stringify(searchTerms);
   }
 
   isLoading = false;
@@ -66,6 +95,34 @@ export class ProductsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log('ngOnInit');
+    
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      let showRecord = true;
+      let searchTerms = JSON.parse(filter);
+      
+      if (searchTerms.productName) {
+        showRecord = false;
+        if(searchTerms.productName === data.productName) {
+          showRecord = true;
+        }
+      }
+
+      if (searchTerms.productMaterial) {
+        showRecord = false;
+        if(searchTerms.productMaterial === data.productMaterial) {
+          showRecord = true;
+        }
+      }
+
+      if (searchTerms.price) {
+        showRecord = false;
+        if(searchTerms.price.min < data.price && searchTerms.price.max > data.price) {
+          showRecord = true;
+        }
+      }
+
+      return showRecord;
+    }
     this.loadData();
   }
 
@@ -117,5 +174,4 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.sort.direction = event.direction;
     this.loadData();
   }
-
 }

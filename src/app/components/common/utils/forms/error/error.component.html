@@ -1,5 +1,5 @@
-<div *ngIf="errorMsgList.length > 0" class="text-danger error">
-    <span *ngFor="let errorMessage of errorMsgList; let last=last;">
+<div *ngIf="errorMsgList.length > 0" class="alert-danger">
+    <div class="invalid-feedback" style="display: block" *ngFor="let errorMessage of errorMsgList; let last=last;">
         {{last ? errorMessage: ''}}
-    </span>  
+    </div>
 </div>

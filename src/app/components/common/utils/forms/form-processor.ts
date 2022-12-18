@@ -1,7 +1,5 @@
 import { FormGroup } from "@angular/forms";
 
-export const validatorKeys: string[] = ['required', 'requiredFileType', 'requiredFileSize'];
-
 export function markAllAsDirty( form: FormGroup ) {
   for ( const control of Object.keys(form.controls) ) {
     form.controls[control].markAsDirty();

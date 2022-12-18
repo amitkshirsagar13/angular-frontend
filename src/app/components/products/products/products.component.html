@@ -1,27 +1,31 @@
 <div class="container">
-  <div class="card">
+  <div class="search card">
     <form [formGroup]="searchForm">
       <div class="card-header">Search Product</div>
       <div class="card-body">
         <div class="input">
           <input class="form-control" formControlName="productName" placeholder="Product Name" required id="productName"/>
-          <div class="errors">
-            <app-error 
-              [showErrors]="searchForm.controls['productName'].touched || searchForm.controls['productName'].dirty"
-              [errors]="searchForm.controls['productName'].errors" ></app-error>
-          </div>
+          <app-error [error]="error('productName')"></app-error>
         </div>
         <div class="input">
           <input class="form-control textbox" formControlName="productMaterial" placeholder="Product Material" required id="productMaterial"/>
-          <div class="errors">
-            <app-error 
-              [showErrors]="searchForm.controls['productMaterial'].touched || searchForm.controls['productMaterial'].dirty"
-              [errors]="searchForm.controls['productMaterial'].errors" ></app-error>
+          <app-error [error]="error('productMaterial')"></app-error>
+        </div>
+        <div class="input">
+          <div class="row">
+            <div class="col-4">
+              <input type="number" class="form-control" formControlName="minPrice" placeholder="Minimum Price" required id="minPrice"/>
+            </div>
+            <div class="col-4">
+              <input type="number" class="form-control" formControlName="maxPrice" placeholder="Maximum Price" required id="maxPrice"/>
+            </div>
+            <app-error [error]="error(undefined)"></app-error>
           </div>
         </div>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-primary" (click)="searchFn()">Search</button>
+        <button type="button" class="btn btn-secondary" (click)="createOrRecreateForm()">Reset</button>
       </div>
     </form>
   </div>

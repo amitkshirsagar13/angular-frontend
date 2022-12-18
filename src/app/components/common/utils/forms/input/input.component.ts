@@ -1,5 +1,6 @@
 import { Component, forwardRef, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputError } from '../error/error.model';
 
 @Component({
   selector: 'app-input',
@@ -31,7 +32,7 @@ export class InputComponent implements ControlValueAccessor {
   placeholder: string;
 
   @Input()
-  errorList: string[];
+  error: InputError;
 
   onChange: any = () => {}
 
