@@ -1,7 +1,7 @@
 import { FormControl } from '@angular/forms';
 
-export function fileValidationRules( types: string[], maxAllowedSize:number = 1024 * 1024) {
-  return function ( control: FormControl ) {
+export const fileValidationRules = ( types: string[], maxAllowedSize:number = 1024 * 1024) => {
+  return ( control: FormControl ) => {
     const file = control.value;
     if ( file ) {
       const extension = file.name.split('.')[1].toLowerCase();

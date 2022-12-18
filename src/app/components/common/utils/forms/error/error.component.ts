@@ -9,6 +9,7 @@ import { InputError } from './error.model';
 export class ErrorComponent implements OnInit {
   ngOnInit() {}
   @Input() error: InputError | null;
+  @Input() showAllErrors: boolean = false;
 
   errorMessage: any = {
     'required'  : (params: any| null)  => `Field is required`,
@@ -21,6 +22,8 @@ export class ErrorComponent implements OnInit {
     'requiredFileType': (params: any| null)  => `Only ${params.types} 🤡`,
     'requiredFileSize': (params: any| null)  => `Allowed only size ${params.maxAllowedSize}kb 🤡`,
     'rangeInvalid': (params: any| null)  => `Min value should be smaller than max value`,
+    'invalidMin'  : (params: any| null)  => `Maximum value allowed ${params.allowedMin}`,
+    'invalidMax'  : (params: any| null)  => `Maximum value allowed ${params.allowedMax}`,
   };
   
   errorMsgList: any = [];
@@ -32,7 +35,8 @@ export class ErrorComponent implements OnInit {
   showErrors() {
     this.errorMsgList = [];
     if (this.error && this.error.canShow) {
-      Object.keys(this.error.items).forEach( (error) => {
+      const errors = Array.isArray(this.error.items) ? this.error.items : Object.keys(this.error.items);
+      errors.forEach( (error) => {
         const msgFn = this.errorMessage[error];
 
         let errorMessage = msgFn ? msgFn(this.error?.items[error]): `Undefined error with key: ${error}`;
