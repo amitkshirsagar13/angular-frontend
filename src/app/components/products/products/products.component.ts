@@ -33,8 +33,8 @@ export class ProductsComponent implements OnInit, AfterViewInit {
         {
           productName: ['', Validators.minLength(5)],
           productMaterial: ['', { validators: Validators.maxLength(5), updateOn: 'change'}], 
-          minPrice: [0, { validators: Validators.min(10) }], 
-          maxPrice: [1000, { validators: Validators.max(1000000) }], 
+          minPrice: ['', { validators: Validators.min(10) }], 
+          maxPrice: ['', { validators: Validators.max(1000000) }], 
         }, 
         { validators: rangeValidator('minPrice', 'maxPrice'), updateOn: 'blur' }
       );
@@ -54,22 +54,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       items: control.errors ? control.errors : {},
       field
     };
-  }
-
-  searchFn() {
-    // Create searchTerms from the searchForm control fields
-    const searchTerms = {
-      productName: this.sfC.productName.value,
-      productMaterial: this.sfC.productMaterial.value,
-      price: {
-        min: this.sfC.minPrice.value,
-        max: this.sfC.maxPrice.value,
-      }
-    };
-
-    console.log(searchTerms);
-    
-    this.dataSource.filter = JSON.stringify(searchTerms);
   }
 
   isLoading = false;
@@ -96,33 +80,7 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('ngOnInit');
     
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      let showRecord = true;
-      let searchTerms = JSON.parse(filter);
-      
-      if (searchTerms.productName) {
-        showRecord = false;
-        if(searchTerms.productName === data.productName) {
-          showRecord = true;
-        }
-      }
-
-      if (searchTerms.productMaterial) {
-        showRecord = false;
-        if(searchTerms.productMaterial === data.productMaterial) {
-          showRecord = true;
-        }
-      }
-
-      if (searchTerms.price) {
-        showRecord = false;
-        if(searchTerms.price.min < data.price && searchTerms.price.max > data.price) {
-          showRecord = true;
-        }
-      }
-
-      return showRecord;
-    }
+    this.dataSource.filterPredicate = this.filterPredicate
     this.loadData();
   }
 
@@ -173,5 +131,49 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.sort.active = event.active;
     this.sort.direction = event.direction;
     this.loadData();
+  }
+
+  filterPredicate = (data: any, filter: string) => {
+    let showRecord = true;
+    let searchTerms = JSON.parse(filter);
+    
+    if (showRecord && searchTerms.productName) {
+      showRecord = false;
+      if(searchTerms.productName === data.productName) {
+        showRecord = true;
+      }
+    }
+
+    if (showRecord && searchTerms.productMaterial) {
+      showRecord = false;
+      if(searchTerms.productMaterial === data.productMaterial) {
+        showRecord = true;
+      }
+    }
+
+    if (showRecord && searchTerms.price) {
+      showRecord = false;
+      if(searchTerms.price.min < data.price && searchTerms.price.max > data.price) {
+        showRecord = true;
+      }
+    }
+
+    return showRecord;
+  }
+
+  searchFn() {
+    // Create searchTerms from the searchForm control fields
+    const searchTerms = {
+      productName: this.sfC.productName.value,
+      productMaterial: this.sfC.productMaterial.value,
+      price: this.sfC.minPrice.value || this.sfC.maxPrice.value ? {
+        min: this.sfC.minPrice.value,
+        max: this.sfC.maxPrice.value,
+      }: undefined
+    };
+
+    console.log(searchTerms);
+    
+    this.dataSource.filter = JSON.stringify(searchTerms);
   }
 }
