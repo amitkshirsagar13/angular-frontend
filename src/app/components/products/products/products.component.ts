@@ -16,28 +16,35 @@ import { rangeValidator } from '../../common/utils/validators/range-validators';
 })
 export class ProductsComponent implements OnInit, AfterViewInit {
 
-  constructor(private formBuilder: FormBuilder, private productService: ProductService) {
+  constructor(private formBuilder: FormBuilder, 
+    private productService: ProductService) {
     console.log('constructor');
-    this.createOrRecreateForm();
+    this.createOrResetForm(false);
   }
 
+  //-----------------------------------------------------------------------------
   // Always create method createForm and call it from the constructor
+  //-----------------------------------------------------------------------------
   searchForm: FormGroup;
   get sfC(): any {
     return this.searchForm.controls
   }
-  createOrRecreateForm() {
+  
+  createOrResetForm(reset: boolean) {
     console.log('createOrRecreateForm');
     this.searchForm = this.formBuilder
       .group(
         {
           productName: ['', Validators.minLength(5)],
-          productMaterial: ['', { validators: Validators.maxLength(5), updateOn: 'change'}], 
+          productMaterial: ['', { validators: Validators.maxLength(13), updateOn: 'change'}], 
           minPrice: ['', { validators: Validators.min(10) }], 
-          maxPrice: ['', { validators: Validators.max(1000000) }], 
+          maxPrice: ['', { validators: Validators.max(10000) }], 
         }, 
         { validators: rangeValidator('minPrice', 'maxPrice'), updateOn: 'blur' }
       );
+      if (reset) {
+        this.searchFn();
+      }
   }
   
   error(field: string|undefined): InputError {
@@ -55,13 +62,13 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       field
     };
   }
+  //-----------------------------------------------------------------------------
 
   isLoading = false;
-  pageSize = 25;
-  totalRows = 0;
-  currentPage = 0;
-  pageSizeOptions: number[] = [5, 10, 25];
 
+  //-----------------------------------------------------------------------------
+  // Mat Table with Pagination and Sorting
+  //-----------------------------------------------------------------------------
   displayedColumns: string[] = [
     'id',
     'productName',
@@ -73,9 +80,14 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   ];
 
   dataSource: MatTableDataSource<Product> = new MatTableDataSource();
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort = new MatSort();
+
+  currentPage = 0;
+  totalRows = 0;
+  pageSize = 25;
+  pageSizeOptions: number[] = [5, 10, 25];
+  //-----------------------------------------------------------------------------
 
   ngOnInit(): void {
     console.log('ngOnInit');
@@ -133,24 +145,27 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 
+  //-----------------------------------------------------------------------------
+  // Filter and Search with Form Data in dataSource
+  //-----------------------------------------------------------------------------
   filterPredicate = (data: any, filter: string) => {
     let showRecord = true;
     let searchTerms = JSON.parse(filter);
-    
+    // Filter by product name    
     if (showRecord && searchTerms.productName) {
       showRecord = false;
       if(searchTerms.productName === data.productName) {
         showRecord = true;
       }
     }
-
+    // Filter by product material
     if (showRecord && searchTerms.productMaterial) {
       showRecord = false;
       if(searchTerms.productMaterial === data.productMaterial) {
         showRecord = true;
       }
     }
-
+    // Filter by product price
     if (showRecord && searchTerms.price) {
       showRecord = false;
       if(searchTerms.price.min < data.price && searchTerms.price.max > data.price) {
@@ -169,11 +184,11 @@ export class ProductsComponent implements OnInit, AfterViewInit {
       price: this.sfC.minPrice.value || this.sfC.maxPrice.value ? {
         min: this.sfC.minPrice.value,
         max: this.sfC.maxPrice.value,
-      }: undefined
+      } : undefined
     };
 
     console.log(searchTerms);
-    
     this.dataSource.filter = JSON.stringify(searchTerms);
   }
+  //-----------------------------------------------------------------------------
 }

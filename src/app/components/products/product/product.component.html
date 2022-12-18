@@ -11,46 +11,45 @@
     <div class="card-body">
       <div class="row">
         <div class="col-9">
+          <app-input type="text"
+            id="productName"
+            label="Product Name"
+            formControlName="productName"
+            placeholder="Enter Product Name!!!"
+            [showLabel]="showLabel"
+            [error]="error('productName')"></app-input>
 
           <app-input type="text"
-          id="productName"
-          label="Product Name"
-          formControlName="productName"
-          placeholder="Enter Product Name!!!"
-          [showLabel]="showLabel"
-          [error]="error('productName')"></app-input>
-
-          <app-input type="text"
-          id="productMaterial"
-          label="Material Name"
-          formControlName="productMaterial"
-          placeholder="Enter Material Name!!!"
-          [showLabel]="showLabel"
-          [error]="error('productMaterial')"></app-input>
+            id="productMaterial"
+            label="Material Name"
+            formControlName="productMaterial"
+            placeholder="Enter Material Name!!!"
+            [showLabel]="showLabel"
+            [error]="error('productMaterial')"></app-input>
 
           <app-input type="number"
-          id="price"
-          label="Price"
-          formControlName="price"
-          placeholder="Enter Price!!!"
-          [showLabel]="showLabel"
-          [error]="error('price')"></app-input>
+            id="price"
+            label="Price"
+            formControlName="price"
+            placeholder="Enter Price!!!"
+            [showLabel]="showLabel"
+            [error]="error('price')"></app-input>
 
           <app-input type="text"
-          id="department"
-          label="Department"
-          formControlName="department"
-          placeholder="Enter Department!!!"
-          [showLabel]="showLabel"
-          [error]="error('department')"></app-input>
+            id="department"
+            label="Department"
+            formControlName="department"
+            placeholder="Enter Department!!!"
+            [showLabel]="showLabel"
+            [error]="error('department')"></app-input>
 
           <app-file-upload
-          id="productImage"
-          label="Product Image"
-          formControlName="productImage"
-          [progress]="progress"
-          [showLabel]="showLabel"
-          [error]="error('productImage')"></app-file-upload>
+            id="productImage"
+            label="Product Image"
+            formControlName="productImage"
+            [progress]="progress"
+            [showLabel]="showLabel"
+            [error]="error('productImage')"></app-file-upload>
         </div>
         <div class="col-3">
           <img class="preview-img" id='previewImage'/>
