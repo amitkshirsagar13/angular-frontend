@@ -10,7 +10,9 @@
       placeholder="{{placeholder}}"
       [(ngModel)]="input"
       (ngModelChange)="onChange($event)"
-      (blur)="onTouch()">
-      <app-error [error]="error"></app-error>
+      (blur)="onTouch()"
+      attr.allowedFilters="{{allowedFilters}}"
+      (keypress)="filterKeystrokes($event)">
+    <app-error [error]="error"></app-error>
   </div>
 </div>

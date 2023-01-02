@@ -16,6 +16,7 @@
             label="Product Name"
             formControlName="productName"
             placeholder="Enter Product Name!!!"
+            [allowedFilters]="{'imports': ['ALPHABETS', 'NUMBERS'], allowedAsciiList: [44]}"
             [showLabel]="showLabel"
             [error]="error('productName')"></app-input>
 
@@ -24,6 +25,7 @@
             label="Material Name"
             formControlName="productMaterial"
             placeholder="Enter Material Name!!!"
+            [allowedFilters]="{'imports': ['ALPHABETS', 'NUMBERSWITHDECIMAL'], excludedAsciiList: [90,122]}"
             [showLabel]="showLabel"
             [error]="error('productMaterial')"></app-input>
 

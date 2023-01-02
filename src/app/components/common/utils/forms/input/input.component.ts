@@ -1,6 +1,7 @@
 import { Component, forwardRef, HostListener, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputError } from '../error/error.model';
+import { executeFilters } from '../keyEventFilter';
 
 @Component({
   selector: 'app-input',
@@ -34,9 +35,19 @@ export class InputComponent implements ControlValueAccessor {
   @Input()
   error: InputError;
 
+  @Input()
+  allowedFilters: any;
+
   onChange: any = () => {}
 
   onTouch: any = () => {}
+
+  filterKeystrokes(event: any): Boolean {
+    if(!this.allowedFilters) {
+      return true;
+    }
+    return executeFilters(event, this.allowedFilters);
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
